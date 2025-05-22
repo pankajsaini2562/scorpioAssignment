@@ -9,6 +9,20 @@ export const getTasks = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getupatedTask = async (req, res) => {
+  const userId = req.user;
+  try {
+    const task = await Task.findOne({ _id: req.params.id, userId });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    res.json(task);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export const createTask = async (req, res) => {
   const { title, description, status, dueDate } = req.body;
   const userId = req.user;
