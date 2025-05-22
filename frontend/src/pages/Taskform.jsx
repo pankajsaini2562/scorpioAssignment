@@ -21,8 +21,7 @@ const Taskform = () => {
       if (id) {
         await API.put(`/task/${id}`, form);
       } else {
-        const response = await API.post("/task/", form);
-        console.log("response", response);
+        await API.post("/task/", form);
       }
       navigate("/dashboard");
     } catch (error) {
@@ -32,16 +31,24 @@ const Taskform = () => {
   };
 
   useEffect(() => {
-    if (id) {
-      API.get(`/task/${id}`).then((res) => {
-        // Ensure dueDate is formatted correctly for input[type=date]
-        const task = res.data;
-        const formattedDueDate = task.dueDate
-          ? new Date(task.dueDate).toISOString().split("T")[0]
-          : "";
-        setForm({ ...task, dueDate: formattedDueDate });
-      });
-    }
+    const fetchTask = async () => {
+      try {
+        if (id) {
+          const res = await API.get(`/task/${id}`);
+          console.log("Idres", res);
+          const task = res.data;
+          const formattedDueDate = task.dueDate
+            ? new Date(task.dueDate).toISOString().split("T")[0]
+            : "";
+          setForm({ ...task, dueDate: formattedDueDate });
+        }
+      } catch (error) {
+        console.error("Error fetching task:", error);
+        alert(error.response?.data?.message || "Failed to load task");
+      }
+    };
+
+    fetchTask();
   }, [id]);
 
   return (
