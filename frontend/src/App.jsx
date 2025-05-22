@@ -30,11 +30,12 @@ const App = () => {
           path="/task"
           element={isAuthenticated ? <Taskform /> : <Navigate to="/login" />}
         />
+
+        <Route
+          path="/task/:id"
+          element={isAuthenticated ? <Taskform /> : <Navigate to="/login" />}
+        />
       </Routes>
-      {/* <Route
-        path="/tasks/:id"
-        element={isAuthenticated ? <Taskform /> : <Navigate to="/login" />}
-      /> */}
     </Router>
   );
 };
